@@ -117,9 +117,9 @@ const Home = ()=>{
                     <option value="pending">Pending</option>
                 </select>
                 <button onClick={addIusues}>Submit</button>
-                <ToastContainer/>
 
             </div>
+            <ToastContainer/>
         </div>
     )
 }

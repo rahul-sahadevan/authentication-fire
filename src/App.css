@@ -19,10 +19,11 @@ body{
     justify-content: center;
     margin: auto;
     gap: 10px;
-    background-color: #444;
     margin-top: 10% !important;
     padding: 20px;
     border-radius: 5px;
+    border: solid 1px #444;
+    box-shadow: 0px 2px 2px #444;
 
 }
 
@@ -32,18 +33,20 @@ body{
     border-radius: 5px;
     border: none;
     width: 80% ;
-    border: solid 1px #fff;
+    border: solid 1px #444;
     background-color: #fff;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 3px;
-    padding: 0px 3px;
+    padding: 0;
+
 
 }
 
 .password-container input{
     width: 100% !important;
+    border: none !important;
 
 }
 .eye-icon:active{
@@ -53,7 +56,7 @@ body{
 input ,textarea,select{
     padding:5px;
     border-radius: 5px;
-    border: none;
+    border: solid 1px #444 !important;
     width: 80% !important;
     border: solid 1px #fff;
 
@@ -92,12 +95,11 @@ button:hover{
     align-items: center;
     justify-content: center;
     gap: 15px; 
-    border: 1px solid #ddd; 
+    border: 1px solid #444; 
     padding: 25px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0px 5px 5px #444; 
     width: 40%; 
     border-radius: 10px; 
-    background-color: #444; /* Light background for contrast */
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth hover effect */
 }
 
@@ -205,3 +207,35 @@ button:hover{
     border: none;
     border-radius: 5px;
 }
+.search-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+.search-container input{
+    max-width: 250px;
+    border: solid 1px #444;
+}
+.search-container input:focus{
+    outline: none;
+}
+.pagination {
+    padding: 10px;
+    margin: 15px 0;
+    display: flex;
+    justify-content: center;
+}
+.pagination span{
+    padding: 15px 20px;
+    border: 1px solid grey;
+    cursor: pointer;
+}
+.dissable-arrow{
+    display: none;
+}
+.selected-page{
+    background-color: #444;
+    color: white;
+}
+

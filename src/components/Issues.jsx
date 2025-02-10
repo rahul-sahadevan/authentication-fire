@@ -4,7 +4,7 @@ import { getDocs, collection, deleteDoc, doc, updateDoc } from "firebase/firesto
 import Table from 'react-bootstrap/Table';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import '../App.css';
-import { faTrash, faPencil } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faPencil, faArrowAltCircleLeft, faArrowAltCircleRight } from "@fortawesome/free-solid-svg-icons";
 import Navigation from "./Navbar";
 import { unparse} from "papaparse";
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,9 +15,18 @@ const Issues = () => {
     const [issueList, setIssueList] = useState([]);
     const [editModal, setEditModal] = useState('close-modal');
     const [editValue, setEditValue] = useState({});
+    const[searchList,setSearchList] = useState(issueList || [])
+    const[search,setSearch] = useState('')
+    const[page,setPage] = useState(1)
+
     
     console.log(issueList);
     console.log(editValue);
+    console.log(searchList)
+
+    useEffect(()=>{
+        setSearchList(issueList)
+    },[issueList])
 
     useEffect(()=>{
 
@@ -137,15 +146,41 @@ const Issues = () => {
         tempLink.click();
         document.body.removeChild(tempLink);
     };
+
+
+    const handleSearch = (e)=>{
+        const searchValue = e.target.value.toLowerCase()
+        setSearch(searchValue)
+        const newSearchList = issueList.filter((issue) => 
+            issue.org.toLowerCase().includes(searchValue) || 
+            issue.boxnumber.toLowerCase().includes(searchValue) ||
+            issue.engineer.toLowerCase().includes(searchValue)
+        );    
+
+        setSearchList(newSearchList)
+        
+        console.log(searchList)
+    }
+
+    const handlePagePlus = ()=>{
+        setPage(page + 1)
+    }
+    const handlePageMinus = ()=>{
+        setPage(page - 1)
+    }
+
     
 
     return (
         <div className="issue-container">
             <Navigation/>
             <br />
-            <button className="export-btn" onClick={exportToCSV}>Eport to CSV</button>
+            <div className="search-container">
+                <input onChange={handleSearch} type="text" placeholder="search"  />
+                <button className="export-btn" onClick={exportToCSV}>Eport to CSV</button>
+            </div>
             <br />
-            <Table responsive="sm">
+            <Table responsive="sm" className="table">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -160,7 +195,7 @@ const Issues = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {issueList.map((issue, index) => (
+                    { searchList.slice(page*10-10,page*10).map((issue, index) => (
                         <tr key={issue.id}>
                             <td>{index + 1}</td>
                             <td>{issue.org}</td>
@@ -196,6 +231,7 @@ const Issues = () => {
                     ))}
                 </tbody>
             </Table>
+           
 
             {editModal === 'open-modal' && (
                 <div className={editModal}>
@@ -215,6 +251,26 @@ const Issues = () => {
                     
                 </div>
             )}
+
+           
+
+            {
+                searchList.length >0 && (
+                    <div className="pagination">
+                        <span onClick={handlePageMinus} className= {page === 1 ? 'dissable-arrow' : ''}>
+                            <FontAwesomeIcon icon={faArrowAltCircleLeft}/>
+                        </span>
+                        <span className="selected-page">
+                            {
+                                page
+                            }
+                        </span>
+                        <span onClick={handlePagePlus}className={page < (searchList.length / 10) ? '' : 'dissable-arrow'}>
+                            <FontAwesomeIcon icon={faArrowAltCircleRight}/>
+                        </span>
+                    </div>
+                )
+            }
             <ToastContainer/>
         </div>
     );
